@@ -1,6 +1,6 @@
 import React from 'react'
 import RenderCountry from "./RenderCountry"
-const Persons = ({ filteredList, setKeyword }) => {
+const CountryInfo = ({ filteredList, setKeyword }) => {
 
     if (filteredList.length > 10) {
         return <p>Too many matches, specify another filter</p>
@@ -16,4 +16,4 @@ const Persons = ({ filteredList, setKeyword }) => {
 
 
 }
-export default Persons
+export default CountryInfo

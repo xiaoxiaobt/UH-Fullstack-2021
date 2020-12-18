@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import Persons from "./components/Persons"
+import CountryInfo from "./components/CountryInfo"
 import Filter from "./components/Filter"
 
 const App = () => {
