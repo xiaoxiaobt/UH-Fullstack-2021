@@ -22,7 +22,7 @@ const App = () => {
   return (
     <div>
       <Filter setKeyword={setKeyword} />
-      <Persons filteredList={filteredList} setKeyword={setKeyword} />
+      <CountryInfo filteredList={filteredList} setKeyword={setKeyword} />
     </div>
   )
 }
