@@ -1,29 +1,7 @@
 import React, { useState } from 'react'
-
-const Persons = ({ filteredList }) => filteredList.map(p => <p key={p.name}>{p.name} {p.number}</p>)
-
-const PersonForm = ({ addContact, handleNameChange, handleNumberChange }) => {
-  return (
-    <form onSubmit={addContact} >
-      <div>
-        name: <input onChange={handleNameChange} />
-      </div>
-      <div>number: <input onChange={handleNumberChange} /></div>
-      <div>
-        <button type="submit">add</button>
-      </div>
-    </form>
-  )
-}
-
-const Filter = ({ setKeyword }) => {
-  return (
-    <div>
-      filter shown with
-      <input onChange={(event) => setKeyword(event.target.value)} />
-    </div>
-  )
-}
+import Persons from "./components/Persons"
+import PersonForm from "./components/PersonForm"
+import Filter from "./components/Filter"
 
 const App = () => {
   const [persons, setPersons] = useState([
