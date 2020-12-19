@@ -1,7 +1,9 @@
+import './index.css'
 import React, { useState, useEffect } from 'react'
 import Persons from "./components/Persons"
 import PersonForm from "./components/PersonForm"
 import Filter from "./components/Filter"
+import Notification from "./components/Notification"
 import personService from './services/person'
 
 const App = () => {
@@ -9,13 +11,13 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [keyword, setKeyword] = useState('')
-
-
+  const [message, setMessage] = useState(null)
+  const [className, setClassName] = useState("success")
   useEffect(() => {
     personService
       .getAll()
       .then(personList => setPersons(personList))
-      .catch(error => console.log('fail'))
+      .catch(error => console.log('Failed to fetch the list'))
   }, [])
 
 
@@ -29,16 +31,31 @@ const App = () => {
         const cloned = { ...oldObject, number: newNumber }
         personService
           .update(oldObject.id, cloned)
-          .then(response => setPersons(persons.map(x => x.name === newName ? cloned : x)))
-          .catch(error => console.log('fail'))
+          .then(response => {
+            setPersons(persons.map(x => x.name === newName ? cloned : x))
+            setMessage(`Updated ${newName}`)
+            setClassName("success")
+          })
+          .catch(error => {
+            console.log('fail')
+            setMessage(`Failed to update ${newName}`)
+            setClassName("error")
+          })
       }
     } else {
       const newObject = { name: newName, number: newNumber }
       personService
         .create(newObject)
-        .then(responseObject => setPersons(persons.concat(responseObject)))
-        .catch(error => console.log('fail'))
-      console.log(persons)
+        .then(responseObject => {
+          setPersons(persons.concat(responseObject))
+          setMessage(`Added ${newName}`)
+          setClassName("success")
+        })
+        .catch(error => {
+          console.log(`Failed to add ${newName}`)
+          setMessage(`Failed to add ${newName}`)
+          setClassName("error")
+        })
     }
   }
 
@@ -47,8 +64,16 @@ const App = () => {
     if (result) {
       personService
         .remove(p.id)
-        .then(response => setPersons(persons.filter(other => other.id !== p.id)))
-        .catch(error => console.log('fail'))
+        .then(response => {
+          setPersons(persons.filter(other => other.id !== p.id))
+          setMessage(`Removed ${p.name}`)
+          setClassName("success")
+        })
+        .catch(error => {
+          console.log(`Information of ${p.name} has been already removed from server`)
+          setMessage(`Information of ${p.name} has been already removed from server`)
+          setClassName("error")
+        })
     }
   }
 
@@ -59,6 +84,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification className={className} message={message} />
       <Filter setKeyword={setKeyword} />
       <h3>add a new</h3>
       <PersonForm addContact={addContact}
