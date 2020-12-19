@@ -4,7 +4,7 @@ const Filter = ({ setKeyword }) => {
     return (
         <div>
             filter shown with
-            <input onChange={(event) => setKeyword(event.target.value)} />
+            <input onChange={event => setKeyword(event.target.value)} />
         </div>
     )
 }
