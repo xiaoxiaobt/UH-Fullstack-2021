@@ -1,3 +1,4 @@
 [submodule "part3"]
 	path = part3
 	url = git@github.com:xiaoxiaobt/Fullstack-UH-2020-Part3.git
+	branch = master

@@ -14,7 +14,6 @@
 			"**/.eslintcache": true,
 			"**/node_modules": true,
 			"*/**/README.md":true,
-			"*/**/.gitignore": true,
 			"LICENSE": true
 		}
 	}
