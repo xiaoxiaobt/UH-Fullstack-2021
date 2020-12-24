@@ -37,8 +37,8 @@ const App = () => {
             setClassName("success")
           })
           .catch(error => {
-            console.log('fail')
-            setMessage(`Failed to update ${newName}`)
+            console.log(`Failed to update ${newName}`)
+            setMessage(error.response.data.error)
             setClassName("error")
           })
       }
@@ -53,7 +53,7 @@ const App = () => {
         })
         .catch(error => {
           console.log(`Failed to add ${newName}`)
-          setMessage(`Failed to add ${newName}`)
+          setMessage(error.response.data.error)
           setClassName("error")
         })
     }
