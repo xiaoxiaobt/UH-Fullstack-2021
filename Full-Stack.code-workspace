@@ -16,7 +16,8 @@
 			"*/**/README.md": true,
 			"**/.eslintignore": true,
 			"**/package-lock.json": true,
-			"LICENSE": true
+			"LICENSE": true,
+			".github": true
 		}
 	}
 }
