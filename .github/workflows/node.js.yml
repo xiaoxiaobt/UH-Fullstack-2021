@@ -9,10 +9,12 @@ on:
   pull_request:
     branches: [master]
 
+defaults:
+  run:
+    working-directory: part4
+    
 jobs:
   build:
-    env:
-      working-directory: part4
     runs-on: ubuntu-latest
 
     strategy:
