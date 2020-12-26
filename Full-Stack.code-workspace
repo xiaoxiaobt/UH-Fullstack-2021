@@ -13,7 +13,9 @@
 			"**/.DS_Store": true,
 			"**/.eslintcache": true,
 			"**/node_modules": true,
-			"*/**/README.md":true,
+			"*/**/README.md": true,
+			"**/.eslintignore": true,
+			"**/package-lock.json": true,
 			"LICENSE": true
 		}
 	}
