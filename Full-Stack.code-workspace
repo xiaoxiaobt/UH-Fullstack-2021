@@ -6,6 +6,8 @@
 	],
 	"settings": {
 		"files.exclude": {
+			"LICENSE": true,
+			".github": true,
 			"**/.git": true,
 			"**/.svn": true,
 			"**/.hg": true,
@@ -13,11 +15,11 @@
 			"**/.DS_Store": true,
 			"**/.eslintcache": true,
 			"**/node_modules": true,
-			"*/**/README.md": true,
 			"**/.eslintignore": true,
+			"**/jest.config.js": true,
 			"**/package-lock.json": true,
-			"LICENSE": true,
-			".github": true
+			"*/**/README.md": true,
+			"*/**/.gitignore": true
 		}
 	}
 }
