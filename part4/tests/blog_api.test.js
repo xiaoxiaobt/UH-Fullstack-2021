@@ -14,19 +14,17 @@ beforeEach(async () => {
   }
 })
 
-test('blogs are returned as json', async () => {
+test('there are six blogs returned as json', async () => {
   await api.get('/api/blogs')
     .expect(200)
     .expect('Content-Type', /application\/json/)
     .expect((response) => { response.body.length === helper.initialBlogs.length })
 })
 
-
-test('there are six blogs', async () => {
+test('the unique identifier property of the blog posts is named id', async () => {
   const response = await api.get('/api/blogs')
-
-  expect(response.body).toHaveLength(6)
-})
+  response.body.forEach(x => expect(x.id).toBeDefined())
+});
 
 afterAll(() => {
   mongoose.connection.close()
