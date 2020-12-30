@@ -20,6 +20,7 @@
 			"**/package-lock.json": true,
 			"*/**/README.md": true,
 			"*/**/.gitignore": true
-		}
+		},
+		"editor.tabSize": 2
 	}
 }
