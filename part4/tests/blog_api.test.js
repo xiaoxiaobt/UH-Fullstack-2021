@@ -1,10 +1,10 @@
-const mongoose = require('mongoose')
 const supertest = require('supertest')
-const app = require('../app')
+const mongoose = require('mongoose')
 const helper = require('./test_helper')
+const app = require('../app')
 const api = supertest(app)
-const Blog = require('../models/blog')
 
+const Blog = require('../models/blog')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -37,20 +37,19 @@ test('a valid blog can be added', async () => {
   await api
     .post('/api/blogs')
     .send(newBlog)
-    .expect(201)
+    .expect(200)
     .expect('Content-Type', /application\/json/)
 
   const blogsAtEnd = await helper.blogsInDb()
   expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)
 
+  // https://medium.com/@andrei.pfeiffer/jest-matching-objects-in-array-50fe2f4d6b98
   expect(blogsAtEnd).toEqual(
     expect.arrayContaining([
       expect.objectContaining(newBlog)
     ])
   )
 })
-
-
 
 test('likes property has default value 0', async () => {
   const newBlog = {
@@ -62,7 +61,7 @@ test('likes property has default value 0', async () => {
   await api
     .post('/api/blogs')
     .send(newBlog)
-    .expect(201)
+    .expect(200)
     .expect('Content-Type', /application\/json/)
 
   const blogsAtEnd = await helper.blogsInDb()
@@ -70,12 +69,22 @@ test('likes property has default value 0', async () => {
 
   expect(blogsAtEnd).toEqual(
     expect.arrayContaining([
-      expect.objectContaining({...newBlog, likes: 0})
+      expect.objectContaining({ ...newBlog, likes: 0 })
     ])
   )
 })
 
+test('adding a blog without title and url result in bad request', async () => {
+  const newBlog = {
+    author: "Blogger3",
+    likes: 999
+  }
 
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+})
 
 afterAll(() => {
   mongoose.connection.close()
