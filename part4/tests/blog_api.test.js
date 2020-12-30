@@ -5,6 +5,7 @@ const app = require('../app')
 const api = supertest(app)
 
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -85,6 +86,45 @@ test('adding a blog without title and url result in bad request', async () => {
     .send(newBlog)
     .expect(400)
 })
+
+
+
+describe('when there is initially one user at db', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+    const user = new User({ username: 'root', password: 'sekret' })
+    await user.save()
+  })
+
+  test('creation fails with invalid info', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    let newUser = {
+      username: 'test',
+      name: 'Tester',
+      password: 'a'
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect(/Error/)
+
+    newUser = {
+      username: 't',
+      name: 'Tester',
+      password: '123'
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect(/failed/)
+  })
+})
+
 
 afterAll(() => {
   mongoose.connection.close()
