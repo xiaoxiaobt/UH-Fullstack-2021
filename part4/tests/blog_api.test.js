@@ -6,7 +6,7 @@ const api = supertest(app)
 
 const Blog = require('../models/blog')
 const User = require('../models/user')
-//const authorizationKey = 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjVmZWM0YTQ5MWM4MjgyMjBjMDQ2ZTQ3YSIsImlhdCI6MTYwOTMyMjAyMn0.dV3-DMyreaA0OhD84eZN9PAp9vR0XQRO9UNZcgq-Yeo'
+
 describe('blog tests', () => {
   beforeEach(async () => {
     await User.deleteMany({})
