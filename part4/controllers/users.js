@@ -34,7 +34,7 @@ usersRouter.put('/:id', (request, response, next) => {
   const user = {
     username: body.username,
     name: body.name,
-    blogs: body.blogs === null ? body.blogs : []
+    blogs: body.blogs
   }
 
   User.findByIdAndUpdate(request.params.id, user, { new: true })
