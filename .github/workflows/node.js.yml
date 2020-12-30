@@ -9,10 +9,15 @@ on:
   pull_request:
     branches: [master]
 
+env:
+  TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+  MONGODB_URI: ${{ secrets.MONGODB_URI }}
+  PORT: ${{ secrets.PORT }}
+
 defaults:
   run:
     working-directory: part4
-    
+
 jobs:
   build:
     runs-on: ubuntu-latest
