@@ -19,7 +19,9 @@
 			"**/jest.config.js": true,
 			"**/package-lock.json": true,
 			"*/**/README.md": true,
-			"*/**/.gitignore": true
+			"*/**/.gitignore": true,
+			"ans": true,
+			"exam": true
 		},
 		"editor.tabSize": 2
 	}
