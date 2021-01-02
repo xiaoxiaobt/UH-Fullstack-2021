@@ -17,7 +17,6 @@ const App = () => {
     blogService.getAll().then(blogs => setBlogs(blogs))
   }, [])
 
-
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
@@ -50,9 +49,7 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
-      const user = await loginService.login({
-        username, password,
-      })
+      const user = await loginService.login({ username, password })
 
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
@@ -105,38 +102,26 @@ const App = () => {
         title
         <input
           value={newTitle}
-          onChange={handleTitleChange}
+          onChange={(event) => setNewTitle(event.target.value)}
         />
       </div>
       <div>
         author
         <input
           value={newAuthor}
-          onChange={handleAuthorChange}
+          onChange={(event) => setNewAuthor(event.target.value)}
         />
       </div>
       <div>
         url
         <input
           value={newUrl}
-          onChange={handleUrlChange}
+          onChange={(event) => setNewUrl(event.target.value)}
         />
       </div>
       <button type="submit">create</button>
     </form>
   )
-
-  const handleTitleChange = (event) => {
-    setNewTitle(event.target.value)
-  }
-
-  const handleAuthorChange = (event) => {
-    setNewAuthor(event.target.value)
-  }
-
-  const handleUrlChange = (event) => {
-    setNewUrl(event.target.value)
-  }
 
   if (user === null) {
     return (
