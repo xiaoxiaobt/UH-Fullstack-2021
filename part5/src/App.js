@@ -1,3 +1,4 @@
+import './App.css'
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
@@ -40,10 +41,23 @@ const App = () => {
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
+        setErrorMessage(`a new blog ${newTitle} by ${newAuthor} added`)
         setNewTitle('')
         setNewAuthor('')
         setNewUrl('')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       })
+  }
+
+  const Notification = ({ className, message }) => {
+    if (message) {
+      return (
+        <div className={className}>{message}</div>
+      )
+    } else
+      return null
   }
 
   const handleLogin = async (event) => {
@@ -54,7 +68,6 @@ const App = () => {
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )
-
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -127,6 +140,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
+        <Notification message={errorMessage} className='error' />
         {loginForm()}
       </div>
     )
@@ -134,14 +148,13 @@ const App = () => {
     return (
       <div>
         <h2>blogs</h2>
+        <Notification message={errorMessage} className='success' />
         <p>
           {user.name} logged in <button onClick={handleLogout}>logout</button>
         </p>
         <h2>create new</h2>
         {blogForm()}
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-        )}
+        {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
       </div>
     )
   }
