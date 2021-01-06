@@ -10,7 +10,6 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -30,7 +29,6 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -97,12 +95,12 @@ const App = () => {
           {user.name} logged in <button onClick={handleLogout}>logout</button>
         </p>
         {/* blogForm() */}
-        <Togglable buttonLabel='new blog' ref={blogFormRef}>
+        <Togglable buttonLabel='create new blog' ref={blogFormRef}>
           <BlogForm createBlog={createBlog} userid={user.id} />
         </Togglable>
         {/*  */}
         {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
-      </div>
+      </div >
     )
   }
 }

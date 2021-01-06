@@ -28,6 +28,7 @@ const mostBlogs = (blogs) => {
         return author
     }
 }
+
 const mostLikes = (blogs) => {
     if (blogs.length === 0)
         return
