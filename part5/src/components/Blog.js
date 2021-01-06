@@ -9,8 +9,7 @@ const blogStyle = {
   marginBottom: 5
 }
 
-const Blog = ({ blog }) => {
-  const [currentBlog, setCurrentBlog] = useState(blog)
+const Blog = ({ blog, blogs, setBlogs }) => {
   const [buttonText, setButtonText] = useState('view')
   const [contentStyle, setContentStyle] = useState({ display: 'none' })
 
@@ -26,28 +25,28 @@ const Blog = ({ blog }) => {
 
   const increaseLike = async () => {
     const newObj = {
-      title: currentBlog.title,
-      author: currentBlog.author,
-      url: currentBlog.url,
-      likes: currentBlog.likes + 1, 
-      user: currentBlog.user.id
-      }
-    const res = await blogService.update(currentBlog.id, newObj)
-    setCurrentBlog({...res, id: blog.id})
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      likes: blog.likes + 1,
+      user: blog.user.id
+    }
+    const res = await blogService.update(blog.id, newObj)
+    setBlogs([...blogs.filter(x => x.id !== blog.id), res])
   }
 
   return (
     <div style={blogStyle}>
       <div>
-        {currentBlog.title} {currentBlog.author}
+        {blog.title} {blog.author}
         <button onClick={changeVisibility}>{buttonText}</button>
       </div>
       <div style={contentStyle}>
-        <div>{currentBlog.url}</div>
-        <div>likes {currentBlog.likes}
+        <div>{blog.url}</div>
+        <div>likes {blog.likes}
           <button onClick={increaseLike}>like</button>
         </div>
-        <div>{currentBlog.user.name}</div>
+        <div>{blog.user.name}</div>
       </div>
     </div>
   )
