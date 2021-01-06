@@ -9,9 +9,11 @@ const blogStyle = {
   marginBottom: 5
 }
 
-const Blog = ({ blog, blogs, setBlogs }) => {
+const Blog = ({ blog, blogs, setBlogs, username }) => {
   const [buttonText, setButtonText] = useState('view')
   const [contentStyle, setContentStyle] = useState({ display: 'none' })
+
+  const displayDelete = blog.user.username === username ? { display: '' } : { display: 'none' }
 
   const changeVisibility = () => {
     if (buttonText === 'hide') {
@@ -35,6 +37,12 @@ const Blog = ({ blog, blogs, setBlogs }) => {
     setBlogs([...blogs.filter(x => x.id !== blog.id), res])
   }
 
+
+  const deleteBlog = async () => {
+    await blogService.remove(blog.id)
+    setBlogs(blogs.filter(x => x.id !== blog.id))
+  }
+
   return (
     <div style={blogStyle}>
       <div>
@@ -47,6 +55,9 @@ const Blog = ({ blog, blogs, setBlogs }) => {
           <button onClick={increaseLike}>like</button>
         </div>
         <div>{blog.user.name}</div>
+        <div style={displayDelete}>
+          <button onClick={deleteBlog}>delete</button>
+        </div>
       </div>
     </div>
   )
