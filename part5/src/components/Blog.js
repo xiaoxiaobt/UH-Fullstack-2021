@@ -37,7 +37,6 @@ const Blog = ({ blog, blogs, setBlogs, username }) => {
     setBlogs([...blogs.filter(x => x.id !== blog.id), res])
   }
 
-
   const deleteBlog = async () => {
     await blogService.remove(blog.id)
     setBlogs(blogs.filter(x => x.id !== blog.id))
