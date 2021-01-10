@@ -9,14 +9,17 @@ const blog = {
   author: 'Blogger',
   url: 'http://blog.com',
   likes: 12,
-  user: 'temp'
+  id: '5ff604c63f84b62e60576421',
+  user: { id: '123', name: 'tester' }
 }
 
 let component
+let setBlogs
 
 beforeEach(() => {
+  setBlogs = jest.fn()
   component = render(
-    <Blog blog={blog} />
+    <Blog blog={blog} setBlogs={setBlogs} blogs={[blog]} />
   )
 })
 
@@ -40,10 +43,18 @@ test('after clicking the button, children are displayed', () => {
 test('toggled content can be closed', () => {
   const button = component.getByText('view')
   fireEvent.click(button)
-
+  fireEvent.click(button)
   const div = component.container.querySelector('.blogDetails')
-  expect(div).toHaveStyle('display: block')
+  expect(div).toHaveStyle('display: none')
 })
+
+test('clicking like button twice triggers two callbacks', () => {
+  const likeButton = component.getByText('like')
+  fireEvent.click(likeButton)
+  fireEvent.click(likeButton)
+  expect(setBlogs.mock.calls.length).toBe(2)
+})
+
 
 // test('clicking the button calls event handler once', async () => {
 //   const blog = {
