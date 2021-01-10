@@ -21,7 +21,7 @@ const Blog = ({ blog, blogs, setBlogs, username }) => {
       setContentStyle({ display: 'none' })
     } else {
       setButtonText('hide')
-      setContentStyle({})
+      setContentStyle({ display: 'block' })
     }
   }
 
@@ -43,12 +43,12 @@ const Blog = ({ blog, blogs, setBlogs, username }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blogContents'>
       <div className='titleDiv'>
         {blog.title} {blog.author}
         <button onClick={changeVisibility}>{buttonText}</button>
       </div>
-      <div style={contentStyle}>
+      <div style={contentStyle} className='blogDetails'>
         <div>{blog.url}</div>
         <div>likes {blog.likes}
           <button onClick={increaseLike}>like</button>
