@@ -33,8 +33,8 @@ const Blog = ({ blog, blogs, setBlogs, username }) => {
       likes: blog.likes + 1,
       user: blog.user.id
     }
-    const res = await blogService.update(blog.id, newObj)
-    setBlogs([...blogs.filter(x => x.id !== blog.id), res])
+    setBlogs([...blogs.filter(x => x.id !== blog.id), { ...blog, likes: blog.likes + 1 }])
+    await blogService.update(blog.id, newObj)
   }
 
   const deleteBlog = async () => {
