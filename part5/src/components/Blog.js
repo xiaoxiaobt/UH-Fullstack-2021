@@ -44,7 +44,7 @@ const Blog = ({ blog, blogs, setBlogs, username }) => {
 
   return (
     <div style={blogStyle}>
-      <div>
+      <div className='titleDiv'>
         {blog.title} {blog.author}
         <button onClick={changeVisibility}>{buttonText}</button>
       </div>
