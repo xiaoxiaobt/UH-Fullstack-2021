@@ -54,22 +54,3 @@ test('clicking like button twice triggers two callbacks', () => {
   fireEvent.click(likeButton)
   expect(setBlogs.mock.calls.length).toBe(2)
 })
-
-
-// test('clicking the button calls event handler once', async () => {
-//   const blog = {
-//     content: 'Component testing is done with react-testing-library',
-//     important: true
-//   }
-
-//   const mockHandler = jest.fn()
-
-//   const { getByText } = render(
-//     <Blog blog={blog} toggleImportance={mockHandler} />
-//   )
-
-//   const button = getByText('make not important')
-//   fireEvent.click(button)
-
-//   expect(mockHandler.mock.calls.length).toBe(1)
-// })
