@@ -2,6 +2,6 @@
 **/.git
 **/.eslintcache
 **/.env
-**/cypress/videos/
+**/cypress/videos
 /ans
 /exam
