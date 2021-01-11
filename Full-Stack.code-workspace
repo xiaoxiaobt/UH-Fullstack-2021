@@ -18,6 +18,7 @@
 			"**/.eslintignore": true,
 			"**/jest.config.js": true,
 			"**/package-lock.json": true,
+			"**/cypress/videos/": true,
 			"*/**/README.md": true,
 			"*/**/.gitignore": true,
 			"ans": true,
