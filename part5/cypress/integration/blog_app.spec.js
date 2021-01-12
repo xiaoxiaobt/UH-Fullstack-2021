@@ -7,7 +7,14 @@ describe('Blog app', function () {
       password: 'roottest',
       blogs: []
     }
+    const user2 = {
+      name: 'AdminTester2',
+      username: 'roottest2',
+      password: 'roottest2',
+      blogs: []
+    }
     cy.request('POST', 'http://localhost:3001/api/users', user)
+    cy.request('POST', 'http://localhost:3001/api/users', user2)
     cy.visit('http://localhost:3000')
   })
 
@@ -75,10 +82,23 @@ describe('Blog app', function () {
         cy.get('#author').type('blogAuthor')
         cy.get('#url').type('blogUrl')
         cy.get('#create-button').click()
+        cy.wait(5000) // So the notification disappears
         cy.contains('view').click()
         cy.get('#delete-button').click()
         cy.get('html').should('not.contain', 'blogTitle')
         cy.get('html').should('not.contain', 'blogAuthor')
+        cy.contains('create new blog').click()
+        cy.get('#title').type('blogTitle')
+        cy.get('#author').type('blogAuthor')
+        cy.get('#url').type('blogUrl')
+        cy.get('#create-button').click()
+        cy.contains('logout').click()
+        cy.contains('login').click()
+        cy.get('#username').type('roottest2')
+        cy.get('#password').type('roottest2')
+        cy.get('#login-button').click()
+        cy.contains('view').click()
+        cy.get('html').should('not.contain', '#delete-button')
       })
 
     })
