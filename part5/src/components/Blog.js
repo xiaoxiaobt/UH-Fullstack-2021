@@ -12,8 +12,7 @@ const blogStyle = {
 const Blog = ({ blog, blogs, setBlogs, username }) => {
   const [buttonText, setButtonText] = useState('view')
   const [contentStyle, setContentStyle] = useState({ display: 'none' })
-  console.log(blog.user.username)
-  console.log(username)
+
   const displayDelete = blog.user.username === username ? { display: 'block' } : { display: 'none' }
 
   const changeVisibility = () => {
