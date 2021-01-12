@@ -18,13 +18,18 @@
 			"**/.eslintignore": true,
 			"**/jest.config.js": true,
 			"**/package-lock.json": true,
-			"**/cypress/videos/": true,
+			"**/cypress/videos": true,
+			"**/cypress/screenshots": true,
 			"*/**/README.md": true,
 			"*/**/.gitignore": true,
 			"ans": true,
 			"exam": true
 		},
 		"editor.tabSize": 2,
-		"eslint.workingDirectories": [{ "mode": "auto" }]
+		"eslint.workingDirectories": [
+			{
+				"mode": "auto"
+			}
+		]
 	}
 }

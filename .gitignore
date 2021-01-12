@@ -3,5 +3,6 @@
 **/.eslintcache
 **/.env
 **/cypress/videos
+**/cypress/screenshots
 /ans
 /exam
