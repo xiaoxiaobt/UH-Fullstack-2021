@@ -45,7 +45,7 @@ describe('Blog app', function () {
       cy.get('html').should('not.contain', 'AdminTester logged in')
     })
 
-    describe.only('When logged in', function () {
+    describe('When logged in', function () {
       beforeEach(function () {
         cy.contains('login').click()
         cy.get('#username').type('roottest')
@@ -101,6 +101,26 @@ describe('Blog app', function () {
         cy.get('html').should('not.contain', '#delete-button')
       })
 
+      it('Blogs are ordered', function () {
+        cy.contains('create new blog').click()
+        cy.get('#title').type('popular')
+        cy.get('#author').type('blogAuthor')
+        cy.get('#url').type('blogUrl')
+        cy.get('#create-button').click()
+        cy.contains('view').click()
+        cy.get('#like-button').click()
+        cy.contains('likes 1')
+        cy.get('#like-button').click()
+        cy.contains('likes 2')
+        cy.contains('hide').click()
+        cy.contains('create new blog').click()
+        cy.get('#title').type('unpopular')
+        cy.get('#author').type('blogAuthor')
+        cy.get('#url').type('blogUrl')
+        cy.get('#create-button').click()
+        cy.get('.titleDiv:first').should('not.contain', 'unpopular')
+        cy.get('.titleDiv:last').should('contain', 'unpopular')
+      })
     })
   })
 })
