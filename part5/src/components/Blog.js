@@ -12,8 +12,9 @@ const blogStyle = {
 const Blog = ({ blog, blogs, setBlogs, username }) => {
   const [buttonText, setButtonText] = useState('view')
   const [contentStyle, setContentStyle] = useState({ display: 'none' })
-
-  const displayDelete = blog.user.username === username ? { display: '' } : { display: 'none' }
+  console.log(blog.user.username)
+  console.log(username)
+  const displayDelete = blog.user.username === username ? { display: 'block' } : { display: 'none' }
 
   const changeVisibility = () => {
     if (buttonText === 'hide') {
@@ -51,11 +52,11 @@ const Blog = ({ blog, blogs, setBlogs, username }) => {
       <div style={contentStyle} className='blogDetails'>
         <div>{blog.url}</div>
         <div>likes {blog.likes}
-          <button onClick={increaseLike}>like</button>
+          <button id='like-button' onClick={increaseLike}>like</button>
         </div>
         <div>{blog.user.name}</div>
         <div style={displayDelete}>
-          <button onClick={deleteBlog}>delete</button>
+          <button id='delete-button' onClick={deleteBlog}>delete</button>
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ describe('Blog app', function () {
       password: 'roottest',
       blogs: []
     }
-    cy.request('POST', 'http://localhost:3001/api/users/', user)
+    cy.request('POST', 'http://localhost:3001/api/users', user)
     cy.visit('http://localhost:3000')
   })
 
@@ -38,6 +38,49 @@ describe('Blog app', function () {
       cy.get('html').should('not.contain', 'AdminTester logged in')
     })
 
+    describe.only('When logged in', function () {
+      beforeEach(function () {
+        cy.contains('login').click()
+        cy.get('#username').type('roottest')
+        cy.get('#password').type('roottest')
+        cy.get('#login-button').click()
+      })
 
+      it('A blog can be created', function () {
+        cy.contains('create new blog').click()
+        cy.get('#title').type('blogTitle')
+        cy.get('#author').type('blogAuthor')
+        cy.get('#url').type('blogUrl')
+        cy.get('#create-button').click()
+        cy.contains('blogTitle')
+        cy.contains('blogAuthor')
+      })
+
+      it('A blog can be liked', function () {
+        cy.contains('create new blog').click()
+        cy.get('#title').type('blogTitle')
+        cy.get('#author').type('blogAuthor')
+        cy.get('#url').type('blogUrl')
+        cy.get('#create-button').click()
+        cy.contains('view').click()
+        cy.get('#like-button').click()
+        cy.contains('likes 1')
+        cy.get('#like-button').click()
+        cy.contains('likes 2')
+      })
+
+      it('A blog can be deleted', function () {
+        cy.contains('create new blog').click()
+        cy.get('#title').type('blogTitle')
+        cy.get('#author').type('blogAuthor')
+        cy.get('#url').type('blogUrl')
+        cy.get('#create-button').click()
+        cy.contains('view').click()
+        cy.get('#delete-button').click()
+        cy.get('html').should('not.contain', 'blogTitle')
+        cy.get('html').should('not.contain', 'blogAuthor')
+      })
+
+    })
   })
 })
