@@ -34,9 +34,4 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           working-directory: ./app
-      - run: cd unicafe
-      - run: npm config set fund false
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
-      - run: cd ..
+        run: npm config set fund false && npm ci && npm run build --if-present && npm test
