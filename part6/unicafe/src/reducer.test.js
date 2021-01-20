@@ -53,7 +53,7 @@ describe('unicafe reducer', () => {
     })
   })
 
-  test('good is incremented', () => {
+  test('zero is incremented', () => {
     const action = { type: 'ZERO' }
     const state = initialState
 
