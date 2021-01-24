@@ -1,7 +1,7 @@
 const reducer = (state = '', action) => {
   switch (action.type) {
     case 'NEW_ANECDOTE_NOTIFICATION':
-      return `you added '${action.data.content}'`
+      return `new anecdote '${action.data.content}'`
     case 'INCREASE_VOTE_NOTIFICATION':
       return `you voted '${action.data.content}'`
     default:
