@@ -10,12 +10,9 @@ const AnecdoteList = () => {
   )
   const dispatch = useDispatch()
 
-  const handleVoteChange = (anecdote) => {
+  const handleVoteChange = async (anecdote) => {
     dispatch(increaseVote(anecdote.id))
-    dispatch(voteNotification(anecdote.content))
-    setTimeout(() => {
-      dispatch({ type: 'HIDE_NOTIFICATION' })
-    }, 5000)
+    dispatch(voteNotification(anecdote.content, 5000))
   }
 
   return (
