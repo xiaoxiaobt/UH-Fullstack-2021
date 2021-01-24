@@ -1,3 +1,5 @@
+var timeoutID
+
 const reducer = (state = null, action) => {
   switch (action.type) {
     case 'NEW_ANECDOTE_NOTIFICATION':
@@ -13,11 +15,12 @@ const reducer = (state = null, action) => {
 
 export const voteNotification = (content, time) => {
   return dispatch => {
+    clearTimeout(timeoutID)
     dispatch({
       type: 'INCREASE_VOTE_NOTIFICATION',
       data: { content }
     })
-    setTimeout(() => {
+    timeoutID = setTimeout(() => {
       dispatch({ type: 'HIDE_NOTIFICATION' })
     }, time)
   }
@@ -25,11 +28,12 @@ export const voteNotification = (content, time) => {
 
 export const newNotification = (content, time) => {
   return dispatch => {
+    clearTimeout(timeoutID)
     dispatch({
       type: 'NEW_ANECDOTE_NOTIFICATION',
       data: { content }
     })
-    setTimeout(() => {
+    timeoutID = setTimeout(() => {
       dispatch({ type: 'HIDE_NOTIFICATION' })
     }, time)
   }
