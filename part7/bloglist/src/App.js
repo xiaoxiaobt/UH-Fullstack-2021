@@ -7,6 +7,7 @@ import NewBlog from './components/NewBlog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import storage from './utils/storage'
+import { notifyWith } from './reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
 
 const App = () => {
@@ -14,10 +15,10 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [notification, setNotification] = useState(null)
+
+  const dispatch = useDispatch()
 
   const blogFormRef = React.createRef()
-
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
@@ -29,15 +30,6 @@ const App = () => {
     setUser(user)
   }, [])
 
-  const notifyWith = (message, type = 'success') => {
-    setNotification({
-      message, type
-    })
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
-  }
-
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -48,10 +40,10 @@ const App = () => {
       setUsername('')
       setPassword('')
       setUser(user)
-      notifyWith(`${user.name} welcome back!`)
+      dispatch(notifyWith(`${user.name} welcome back!`))
       storage.saveUser(user)
     } catch (exception) {
-      notifyWith('wrong username/password', 'error')
+      dispatch(notifyWith('wrong username/password', 'ERROR'))
     }
   }
 
@@ -60,7 +52,7 @@ const App = () => {
       const newBlog = await blogService.create(blog)
       blogFormRef.current.toggleVisibility()
       setBlogs(blogs.concat(newBlog))
-      notifyWith(`a new blog '${newBlog.title}' by ${newBlog.author} added!`)
+      dispatch(notifyWith(`a new blog '${newBlog.title}' by ${newBlog.author} added!`))
     } catch (exception) {
       console.log(exception)
     }
@@ -92,7 +84,7 @@ const App = () => {
       <div>
         <h2>login to application</h2>
 
-        <Notification notification={notification} />
+        <Notification />
 
         <form onSubmit={handleLogin}>
           <div>
@@ -123,7 +115,7 @@ const App = () => {
     <div>
       <h2>blogs</h2>
 
-      <Notification notification={notification} />
+      <Notification />
 
       <p>
         {user.name} logged in <button onClick={handleLogout}>logout</button>
