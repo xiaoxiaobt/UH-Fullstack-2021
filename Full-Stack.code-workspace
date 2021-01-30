@@ -12,6 +12,7 @@
 			"**/.svn": true,
 			"**/.hg": true,
 			"**/CVS": true,
+			"**/cypress.json": true,
 			"**/.DS_Store": true,
 			"**/.eslintcache": true,
 			"**/node_modules": true,
