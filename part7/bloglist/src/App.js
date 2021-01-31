@@ -15,6 +15,7 @@ import {
 import { notifyWith } from './reducers/notificationReducer'
 import { useDispatch, useSelector, useStore } from 'react-redux'
 import { createBlog, initializeBlogs } from './reducers/blogReducer'
+import { handleLike } from './reducers/blogReducer'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -66,14 +67,47 @@ const App = () => {
 
 
   const byLikes = (b1, b2) => b2.likes - b1.likes
-  const match = useRouteMatch('/users/:id')
-  const oneBlogToShow = match
-    ? blogs.find(b => b.user.id === match.params.id)
+  const matchUser = useRouteMatch('/users/:id')
+  const oneBlogOwnedByUser = matchUser
+    ? blogs.find(b => b.user.id === matchUser.params.id)
+    : null
+
+  const matchBlog = useRouteMatch('/blogs/:id')
+  const matchedBlog = matchBlog
+    ? blogs.find(b => b.id === matchBlog.params.id)
     : null
 
   return (
     <div>
       <Switch>
+        <Route path="/blogs/:id">
+          {
+            <div>
+              <h2>blogs</h2>
+              <Notification />
+              {
+                user
+                  ?
+                  <p>
+                    {user.name} logged in <button onClick={handleLogout}>logout</button>
+                  </p>
+                  : null
+              }
+              {matchedBlog ?
+                <div>
+                  <h2>{matchedBlog.title}</h2>
+                  <Link to={matchedBlog.url}>{matchedBlog.url}</Link>
+                  <div>likes {matchedBlog.likes}
+                    <button onClick={() => dispatch(handleLike(matchedBlog.id))}>like</button>
+                  </div>
+                  <div>added by {matchedBlog.author}</div>
+                </div>
+                :
+                null
+              }
+            </div>
+          }
+        </Route>
         <Route path="/users/:id">
           {
             <div>
@@ -87,13 +121,13 @@ const App = () => {
                   </p>
                   : null
               }
-              {oneBlogToShow ?
+              {oneBlogOwnedByUser ?
                 <div>
-                  <h2>{oneBlogToShow.user.name}</h2>
+                  <h2>{oneBlogOwnedByUser.user.name}</h2>
                   <h3>added blogs</h3>
                   {
                     blogs
-                      .filter(b => b.user.id === oneBlogToShow.user.id)
+                      .filter(b => b.user.id === oneBlogOwnedByUser.user.id)
                       .map(x => <li key={x.id}>{x.title}</li>)
                   }
                 </div>
@@ -160,14 +194,12 @@ const App = () => {
 
                   {
                     blogs.sort(byLikes).map(blog =>
-                      <Blog
-                        key={blog.id}
-                        blog={blog}
-                        own={user.username === blog.user.username}
-                      />
+                      <div key={blog.id} style={{ 'border-style': 'solid', 'margin-bottom': '10px' }}>
+                        <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+                      </div>
                     )
                   }
-                </div >
+                </div>
               )
               :
               (
@@ -200,7 +232,7 @@ const App = () => {
           }
         </Route>
       </Switch>
-    </div>
+    </div >
   )
 }
 
