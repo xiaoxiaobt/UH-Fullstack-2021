@@ -13,7 +13,7 @@ import {
   useHistory,
 } from 'react-router-dom'
 import { notifyWith } from './reducers/notificationReducer'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, useStore } from 'react-redux'
 import { createBlog, initializeBlogs } from './reducers/blogReducer'
 
 const App = () => {
@@ -31,8 +31,10 @@ const App = () => {
 
   useEffect(() => {
     const user = storage.loadUser()
-    if (user)
+    if (user) {
       dispatch(notifyWith(`${user.name} welcome back!`))
+      dispatch({ type: 'LOGIN', data: user })
+    }
   }, [dispatch])
 
   const handleLogin = async (event) => {
@@ -62,59 +64,106 @@ const App = () => {
     dispatch({ type: 'LOGOUT', data: user })
   }
 
-  if (!user) {
-    return (
-      <div>
-        <h2>login to application</h2>
-
-        <Notification />
-
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input
-              id='username'
-              value={username}
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>
-            password
-            <input
-              id='password'
-              value={password}
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-          <button id='login'>login</button>
-        </form>
-      </div>
-    )
-  }
 
   const byLikes = (b1, b2) => b2.likes - b1.likes
 
+
   return (
     <div>
-      <h2>blogs</h2>
+      <Switch>
+        <Route path="/users">
+          {
+            <div>
+              <h2>blogs</h2>
+              <Notification />
+              {
+                user
+                  ?
+                  <p>
+                    {user.name} logged in <button onClick={handleLogout}>logout</button>
+                  </p>
+                  : <></>
+              }
+              <h2>users</h2>
+              <table>
+                <tbody>
+                  <tr>
+                    <th></th>
+                    <th><b>blogs created</b></th>
+                  </tr>
+                  {
+                    [...new Set(blogs.map(b => b.user.id))]
+                      .map(uid =>
+                        <tr key={uid}>
+                          <td>{blogs.find(b => b.user.id === uid).user.name}</td>
+                          <td>{blogs.filter(b => b.user.id === uid).length}</td>
+                        </tr>
+                      )
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </Route>
+        <Route path="/">
+          {
+            user ?
+              (
+                <div>
+                  <h2> blogs</h2>
 
-      <Notification />
+                  <Notification />
 
-      <p>
-        {user.name} logged in <button onClick={handleLogout}>logout</button>
-      </p>
+                  <p>
+                    {user.name} logged in <button onClick={handleLogout}>logout</button>
+                  </p>
 
-      <Togglable buttonLabel='create new blog' ref={blogFormRef}>
-        <NewBlog createBlog={handleNewBlog} />
-      </Togglable>
+                  <Togglable buttonLabel='create new blog' ref={blogFormRef}>
+                    <NewBlog createBlog={handleNewBlog} />
+                  </Togglable>
 
-      {blogs.sort(byLikes).map(blog =>
-        <Blog
-          key={blog.id}
-          blog={blog}
-          own={user.username === blog.user.username}
-        />
-      )}
+                  {
+                    blogs.sort(byLikes).map(blog =>
+                      <Blog
+                        key={blog.id}
+                        blog={blog}
+                        own={user.username === blog.user.username}
+                      />
+                    )
+                  }
+                </div >
+              )
+              :
+              (
+                <div>
+                  <h2>login to application</h2>
+
+                  <Notification />
+
+                  <form onSubmit={handleLogin}>
+                    <div>
+                      username
+                      <input
+                        id='username'
+                        value={username}
+                        onChange={({ target }) => setUsername(target.value)}
+                      />
+                    </div>
+                    <div>
+                      password
+                      <input
+                        id='password'
+                        value={password}
+                        onChange={({ target }) => setPassword(target.value)}
+                      />
+                    </div>
+                    <button id='login'>login</button>
+                  </form>
+                </div>
+              )
+          }
+        </Route>
+      </Switch>
     </div>
   )
 }
