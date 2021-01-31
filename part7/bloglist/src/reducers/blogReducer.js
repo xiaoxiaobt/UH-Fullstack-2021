@@ -15,18 +15,6 @@ const reducer = (state = [], action) => {
   }
 }
 
-// export const increaseVote = (id) => {
-//   return async dispatch => {
-//     const allAnecdotes = await blogService.getAll()
-//     const oldAnecdote = allAnecdotes.find(anecdote => anecdote.id === id)
-//     await blogService.update(oldAnecdote.id, { ...oldAnecdote, votes: oldAnecdote.votes + 1 })
-//     dispatch({
-//       type: 'INCREASE_VOTE',
-//       data: { id }
-//     })
-//   }
-// }
-
 export const createBlog = (blog) => {
   return async dispatch => {
     try {
