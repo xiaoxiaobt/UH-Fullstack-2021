@@ -66,11 +66,43 @@ const App = () => {
 
 
   const byLikes = (b1, b2) => b2.likes - b1.likes
-
+  const match = useRouteMatch('/users/:id')
+  const oneBlogToShow = match
+    ? blogs.find(b => b.user.id === match.params.id)
+    : null
 
   return (
     <div>
       <Switch>
+        <Route path="/users/:id">
+          {
+            <div>
+              <h2>blogs</h2>
+              <Notification />
+              {
+                user
+                  ?
+                  <p>
+                    {user.name} logged in <button onClick={handleLogout}>logout</button>
+                  </p>
+                  : null
+              }
+              {oneBlogToShow ?
+                <div>
+                  <h2>{oneBlogToShow.user.name}</h2>
+                  <h3>added blogs</h3>
+                  {
+                    blogs
+                      .filter(b => b.user.id === oneBlogToShow.user.id)
+                      .map(x => <li key={x.id}>{x.title}</li>)
+                  }
+                </div>
+                :
+                null
+              }
+            </div>
+          }
+        </Route>
         <Route path="/users">
           {
             <div>
@@ -82,7 +114,7 @@ const App = () => {
                   <p>
                     {user.name} logged in <button onClick={handleLogout}>logout</button>
                   </p>
-                  : <></>
+                  : null
               }
               <h2>users</h2>
               <table>
@@ -95,7 +127,11 @@ const App = () => {
                     [...new Set(blogs.map(b => b.user.id))]
                       .map(uid =>
                         <tr key={uid}>
-                          <td>{blogs.find(b => b.user.id === uid).user.name}</td>
+                          <td>
+                            <Link to={`/users/${uid}`}>
+                              {blogs.find(b => b.user.id === uid).user.name}
+                            </Link>
+                          </td>
                           <td>{blogs.filter(b => b.user.id === uid).length}</td>
                         </tr>
                       )
