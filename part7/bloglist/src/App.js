@@ -10,13 +10,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createBlog, initializeBlogs } from './reducers/blogReducer'
 
 const App = () => {
-  // const [blogs, setBlogs] = useState([])
-  const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
+  const user = useSelector(state => state.user)
   const blogFormRef = React.createRef()
 
   useEffect(() => {
@@ -25,8 +24,9 @@ const App = () => {
 
   useEffect(() => {
     const user = storage.loadUser()
-    setUser(user)
-  }, [])
+    if (user)
+      dispatch(notifyWith(`${user.name} welcome back!`))
+  }, [dispatch])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -37,11 +37,12 @@ const App = () => {
 
       setUsername('')
       setPassword('')
-      setUser(user)
       dispatch(notifyWith(`${user.name} welcome back!`))
+      dispatch({ type: 'LOGIN', data: user })
       storage.saveUser(user)
     } catch (exception) {
       dispatch(notifyWith('wrong username/password', 'ERROR'))
+      dispatch({ type: 'LOGIN_FAILED' })
     }
   }
   const handleNewBlog = async (blog) => {
@@ -49,36 +50,9 @@ const App = () => {
     dispatch(createBlog(blog))
   }
 
-  // const createBlog = async (blog) => {
-  //   try {
-  //     const newBlog = await blogService.create(blog)
-  //     blogFormRef.current.toggleVisibility()
-  //     setBlogs(blogs.concat(newBlog))
-  //     dispatch(notifyWith(`a new blog '${newBlog.title}' by ${newBlog.author} added!`))
-  //   } catch (exception) {
-  //     console.log(exception)
-  //   }
-  // }
-
-  // const handleLike = async (id) => {
-  //   const blogToLike = blogs.find(b => b.id === id)
-  //   const likedBlog = { ...blogToLike, likes: blogToLike.likes + 1, user: blogToLike.user.id }
-  //   await blogService.update(likedBlog)
-  //   setBlogs(blogs.map(b => b.id === id ? { ...blogToLike, likes: blogToLike.likes + 1 } : b))
-  // }
-
-  // const handleRemove = async (id) => {
-  //   const blogToRemove = blogs.find(b => b.id === id)
-  //   const ok = window.confirm(`Remove blog ${blogToRemove.title} by ${blogToRemove.author}`)
-  //   if (ok) {
-  //     await blogService.remove(id)
-  //     setBlogs(blogs.filter(b => b.id !== id))
-  //   }
-  // }
-
   const handleLogout = () => {
-    setUser(null)
     storage.logoutUser()
+    dispatch({ type: 'LOGOUT', data: user })
   }
 
   if (!user) {
