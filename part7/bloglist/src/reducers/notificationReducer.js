@@ -6,6 +6,10 @@ const reducer = (state = null, action) => {
       return action.data
     case 'ERROR':
       return action.data
+    case 'NEW_BLOG':
+      return { type: 'SUCCESS', message: `a new blog '${action.data.title}' by ${action.data.author} added!` }
+    case 'DELETE_BLOG':
+      return { type: 'SUCCESS', message: 'ok' }
     default:
       return state
   }
