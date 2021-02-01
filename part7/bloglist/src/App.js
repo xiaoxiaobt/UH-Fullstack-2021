@@ -15,13 +15,13 @@ import {
 } from 'react-router-dom'
 import { notifyWith } from './reducers/notificationReducer'
 import { useDispatch, useSelector, useStore } from 'react-redux'
-import { createBlog, initializeBlogs } from './reducers/blogReducer'
+import { createBlog, initializeBlogs, addComment } from './reducers/blogReducer'
 import { handleLike } from './reducers/blogReducer'
 
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-
+  const [comment, setComment] = useState('')
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.user)
@@ -90,6 +90,12 @@ const App = () => {
                   </div>
                   <div>added by {matchedBlog.author}</div>
                   <h3>comments</h3>
+                  <p>
+                    <input id='newComment'
+                      value={comment}
+                      onChange={({ target }) => setComment(target.value)} />
+                    <button onClick={() => dispatch(addComment(matchedBlog.id, comment))}>add comment</button>
+                  </p>
                   {matchedBlog.comments ? matchedBlog.comments.map((c, i) => <li key={i}>{c}</li>) : null}
                 </div>
                 :

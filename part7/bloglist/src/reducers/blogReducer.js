@@ -10,8 +10,20 @@ const reducer = (state = [], action) => {
       return state.map(b => b.id === action.data.id ? action.data : b).sort((a, b) => b.likes - a.likes)
     case 'DELETE_BLOG':
       return state.filter(b => b.id !== action.data)
+    case 'NEW_COMMENT':
+      return state.map(b => b.id === action.data.id ? action.data : b)
     default:
       return state
+  }
+}
+
+export const addComment = (id, comment) => {
+  return async dispatch => {
+    const newBlog = await blogService.comment(id, comment)
+    dispatch({
+      type: 'NEW_COMMENT',
+      data: newBlog
+    })
   }
 }
 
