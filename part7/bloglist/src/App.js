@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import Blog from './components/Blog'
+// import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import NewBlog from './components/NewBlog'
+import Navigation from './components/Navigation'
 import loginService from './services/login'
 import storage from './utils/storage'
 import {
@@ -60,12 +61,6 @@ const App = () => {
     dispatch(createBlog(blog))
   }
 
-  const handleLogout = () => {
-    storage.logoutUser()
-    dispatch({ type: 'LOGOUT', data: user })
-  }
-
-
   const byLikes = (b1, b2) => b2.likes - b1.likes
   const matchUser = useRouteMatch('/users/:id')
   const oneBlogOwnedByUser = matchUser
@@ -79,20 +74,13 @@ const App = () => {
 
   return (
     <div>
+      <Navigation user={user} storage={storage}/>
       <Switch>
         <Route path="/blogs/:id">
           {
             <div>
               <h2>blogs</h2>
               <Notification />
-              {
-                user
-                  ?
-                  <p>
-                    {user.name} logged in <button onClick={handleLogout}>logout</button>
-                  </p>
-                  : null
-              }
               {matchedBlog ?
                 <div>
                   <h2>{matchedBlog.title}</h2>
@@ -113,14 +101,6 @@ const App = () => {
             <div>
               <h2>blogs</h2>
               <Notification />
-              {
-                user
-                  ?
-                  <p>
-                    {user.name} logged in <button onClick={handleLogout}>logout</button>
-                  </p>
-                  : null
-              }
               {oneBlogOwnedByUser ?
                 <div>
                   <h2>{oneBlogOwnedByUser.user.name}</h2>
@@ -142,14 +122,6 @@ const App = () => {
             <div>
               <h2>blogs</h2>
               <Notification />
-              {
-                user
-                  ?
-                  <p>
-                    {user.name} logged in <button onClick={handleLogout}>logout</button>
-                  </p>
-                  : null
-              }
               <h2>users</h2>
               <table>
                 <tbody>
@@ -183,10 +155,6 @@ const App = () => {
                   <h2> blogs</h2>
 
                   <Notification />
-
-                  <p>
-                    {user.name} logged in <button onClick={handleLogout}>logout</button>
-                  </p>
 
                   <Togglable buttonLabel='create new blog' ref={blogFormRef}>
                     <NewBlog createBlog={handleNewBlog} />
