@@ -10,13 +10,13 @@ import {
   Switch,
   Route,
   Link,
-  useRouteMatch,
-  useHistory,
+  useRouteMatch
 } from 'react-router-dom'
 import { notifyWith } from './reducers/notificationReducer'
-import { useDispatch, useSelector, useStore } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createBlog, initializeBlogs, addComment } from './reducers/blogReducer'
 import { handleLike } from './reducers/blogReducer'
+import Container from '@material-ui/core/Container'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -74,141 +74,143 @@ const App = () => {
 
   return (
     <div>
-      <Navigation user={user} storage={storage} />
-      <Switch>
-        <Route path="/blogs/:id">
-          {
-            <div>
-              <h2>blogs</h2>
-              <Notification />
-              {matchedBlog ?
-                <div>
-                  <h2>{matchedBlog.title}</h2>
-                  <Link to={matchedBlog.url}>{matchedBlog.url}</Link>
-                  <div>likes {matchedBlog.likes}
-                    <button onClick={() => dispatch(handleLike(matchedBlog.id))}>like</button>
+      <Container>
+        <Navigation user={user} storage={storage} />
+        <Switch>
+          <Route path="/blogs/:id">
+            {
+              <div>
+                <h2>blogs</h2>
+                <Notification />
+                {matchedBlog ?
+                  <div>
+                    <h2>{matchedBlog.title}</h2>
+                    <Link to={matchedBlog.url}>{matchedBlog.url}</Link>
+                    <div>likes {matchedBlog.likes}
+                      <button onClick={() => dispatch(handleLike(matchedBlog.id))}>like</button>
+                    </div>
+                    <div>added by {matchedBlog.author}</div>
+                    <h3>comments</h3>
+                    <p>
+                      <input id='newComment'
+                        value={comment}
+                        onChange={({ target }) => setComment(target.value)} />
+                      <button onClick={() => dispatch(addComment(matchedBlog.id, comment))}>add comment</button>
+                    </p>
+                    {matchedBlog.comments ? matchedBlog.comments.map((c, i) => <li key={i}>{c}</li>) : null}
                   </div>
-                  <div>added by {matchedBlog.author}</div>
-                  <h3>comments</h3>
-                  <p>
-                    <input id='newComment'
-                      value={comment}
-                      onChange={({ target }) => setComment(target.value)} />
-                    <button onClick={() => dispatch(addComment(matchedBlog.id, comment))}>add comment</button>
-                  </p>
-                  {matchedBlog.comments ? matchedBlog.comments.map((c, i) => <li key={i}>{c}</li>) : null}
-                </div>
-                :
-                null
-              }
-            </div>
-          }
-        </Route>
-        <Route path="/users/:id">
-          {
-            <div>
-              <h2>blogs</h2>
-              <Notification />
-              {oneBlogOwnedByUser ?
-                <div>
-                  <h2>{oneBlogOwnedByUser.user.name}</h2>
-                  <h3>added blogs</h3>
-                  {
-                    blogs
-                      .filter(b => b.user.id === oneBlogOwnedByUser.user.id)
-                      .map(x => <li key={x.id}>{x.title}</li>)
-                  }
-                </div>
-                :
-                null
-              }
-            </div>
-          }
-        </Route>
-        <Route path="/users">
-          {
-            <div>
-              <h2>blogs</h2>
-              <Notification />
-              <h2>users</h2>
-              <table>
-                <tbody>
-                  <tr>
-                    <th></th>
-                    <th><b>blogs created</b></th>
-                  </tr>
-                  {
-                    [...new Set(blogs.map(b => b.user.id))]
-                      .map(uid =>
-                        <tr key={uid}>
-                          <td>
-                            <Link to={`/users/${uid}`}>
-                              {blogs.find(b => b.user.id === uid).user.name}
-                            </Link>
-                          </td>
-                          <td>{blogs.filter(b => b.user.id === uid).length}</td>
-                        </tr>
+                  :
+                  null
+                }
+              </div>
+            }
+          </Route>
+          <Route path="/users/:id">
+            {
+              <div>
+                <h2>blogs</h2>
+                <Notification />
+                {oneBlogOwnedByUser ?
+                  <div>
+                    <h2>{oneBlogOwnedByUser.user.name}</h2>
+                    <h3>added blogs</h3>
+                    {
+                      blogs
+                        .filter(b => b.user.id === oneBlogOwnedByUser.user.id)
+                        .map(x => <li key={x.id}>{x.title}</li>)
+                    }
+                  </div>
+                  :
+                  null
+                }
+              </div>
+            }
+          </Route>
+          <Route path="/users">
+            {
+              <div>
+                <h2>blogs</h2>
+                <Notification />
+                <h2>users</h2>
+                <table>
+                  <tbody>
+                    <tr>
+                      <th></th>
+                      <th><b>blogs created</b></th>
+                    </tr>
+                    {
+                      [...new Set(blogs.map(b => b.user.id))]
+                        .map(uid =>
+                          <tr key={uid}>
+                            <td>
+                              <Link to={`/users/${uid}`}>
+                                {blogs.find(b => b.user.id === uid).user.name}
+                              </Link>
+                            </td>
+                            <td>{blogs.filter(b => b.user.id === uid).length}</td>
+                          </tr>
+                        )
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
+          </Route>
+          <Route path="/">
+            {
+              user ?
+                (
+                  <div>
+                    <h2> blogs</h2>
+
+                    <Notification />
+
+                    <Togglable buttonLabel='create new blog' ref={blogFormRef}>
+                      <NewBlog createBlog={handleNewBlog} />
+                    </Togglable>
+
+                    {
+                      blogs.sort(byLikes).map(blog =>
+                        <div key={blog.id} style={{ borderStyle: 'solid', marginBottom: '10px' }}>
+                          <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+                        </div>
                       )
-                  }
-                </tbody>
-              </table>
-            </div>
-          }
-        </Route>
-        <Route path="/">
-          {
-            user ?
-              (
-                <div>
-                  <h2> blogs</h2>
+                    }
+                  </div>
+                )
+                :
+                (
+                  <div>
+                    <h2>login to application</h2>
 
-                  <Notification />
+                    <Notification />
 
-                  <Togglable buttonLabel='create new blog' ref={blogFormRef}>
-                    <NewBlog createBlog={handleNewBlog} />
-                  </Togglable>
-
-                  {
-                    blogs.sort(byLikes).map(blog =>
-                      <div key={blog.id} style={{ borderStyle: 'solid', marginBottom: '10px' }}>
-                        <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+                    <form onSubmit={handleLogin}>
+                      <div>
+                        username
+                      <input
+                          id='username'
+                          value={username}
+                          onChange={({ target }) => setUsername(target.value)}
+                        />
                       </div>
-                    )
-                  }
-                </div>
-              )
-              :
-              (
-                <div>
-                  <h2>login to application</h2>
-
-                  <Notification />
-
-                  <form onSubmit={handleLogin}>
-                    <div>
-                      username
+                      <div>
+                        password
                       <input
-                        id='username'
-                        value={username}
-                        onChange={({ target }) => setUsername(target.value)}
-                      />
-                    </div>
-                    <div>
-                      password
-                      <input
-                        id='password'
-                        value={password}
-                        onChange={({ target }) => setPassword(target.value)}
-                      />
-                    </div>
-                    <button id='login'>login</button>
-                  </form>
-                </div>
-              )
-          }
-        </Route>
-      </Switch>
-    </div >
+                          id='password'
+                          value={password}
+                          onChange={({ target }) => setPassword(target.value)}
+                        />
+                      </div>
+                      <button id='login'>login</button>
+                    </form>
+                  </div>
+                )
+            }
+          </Route>
+        </Switch>
+      </Container>
+    </div>
   )
 }
 

@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
-
 const Navigation = ({ user, storage }) => {
 
   const dispatch = useDispatch()
@@ -10,6 +9,7 @@ const Navigation = ({ user, storage }) => {
     storage.logoutUser()
     dispatch({ type: 'LOGOUT', data: user })
   }
+
   if (!user) return null
   return (
     <>
