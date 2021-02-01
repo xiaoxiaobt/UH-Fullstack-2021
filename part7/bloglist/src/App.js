@@ -74,7 +74,7 @@ const App = () => {
 
   return (
     <div>
-      <Navigation user={user} storage={storage}/>
+      <Navigation user={user} storage={storage} />
       <Switch>
         <Route path="/blogs/:id">
           {
@@ -89,6 +89,8 @@ const App = () => {
                     <button onClick={() => dispatch(handleLike(matchedBlog.id))}>like</button>
                   </div>
                   <div>added by {matchedBlog.author}</div>
+                  <h3>comments</h3>
+                  {matchedBlog.comments ? matchedBlog.comments.map((c, i) => <li key={i}>{c}</li>) : null}
                 </div>
                 :
                 null
@@ -162,7 +164,7 @@ const App = () => {
 
                   {
                     blogs.sort(byLikes).map(blog =>
-                      <div key={blog.id} style={{ 'border-style': 'solid', 'margin-bottom': '10px' }}>
+                      <div key={blog.id} style={{ borderStyle: 'solid', marginBottom: '10px' }}>
                         <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
                       </div>
                     )
