@@ -8,11 +8,7 @@ const useField = (type) => {
     setValue(event.target.value)
   }
 
-  return {
-    type,
-    value,
-    onChange
-  }
+  return { type, value, onChange }
 }
 
 const useCountry = (name) => {
@@ -27,6 +23,7 @@ const useCountry = (name) => {
     else
       setCountry(null)
   }, [name])
+
   return country
 }
 
@@ -69,7 +66,6 @@ const App = () => {
         <input {...nameInput} />
         <button>find</button>
       </form>
-
       <Country country={country} />
     </div>
   )

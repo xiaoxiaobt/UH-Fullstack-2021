@@ -2,6 +2,7 @@
 **/.git
 **/.eslintcache
 **/.env
+**/**.log
 **/cypress/videos
 **/cypress/screenshots
 /ans

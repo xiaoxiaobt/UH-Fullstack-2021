@@ -10,11 +10,7 @@ const useField = (type) => {
     setValue(event.target.value)
   }
 
-  return {
-    type,
-    value,
-    onChange
-  }
+  return { type, value, onChange }
 }
 
 const useResource = (baseUrl) => {
