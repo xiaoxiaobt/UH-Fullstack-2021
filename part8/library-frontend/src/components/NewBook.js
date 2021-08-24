@@ -1,4 +1,18 @@
 import React, { useState } from 'react'
+import { useMutation } from '@apollo/client'
+import { ADD_BOOK, ALL_AUTHORS_AND_BOOKS } from '../queries'
+
+const Notify = ({ errorMessage }) => {
+  if (!errorMessage) {
+    return null
+  }
+
+  return (
+    <div style={{ color: 'red' }}>
+      {errorMessage}
+    </div>
+  )
+}
 
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
@@ -6,6 +20,22 @@ const NewBook = (props) => {
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
+  const [errorMessage, setErrorMessage] = useState(null)
+
+  const [addBook] = useMutation(ADD_BOOK, {
+    refetchQueries: [{ query: ALL_AUTHORS_AND_BOOKS }],
+    onError: (error) => {
+      console.log(error)
+      notify(error.graphQLErrors[0].message)
+    }
+  })
+
+  const notify = (message) => {
+    setErrorMessage(message)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+  }
 
   if (!props.show) {
     return null
@@ -13,8 +43,10 @@ const NewBook = (props) => {
 
   const submit = async (event) => {
     event.preventDefault()
-
-    console.log('add book...')
+    if (genres.length === 0) setErrorMessage("Genres cannot be empty")
+    else addBook({
+      variables: { title, author, published: parseInt(published), genres }
+    })
 
     setTitle('')
     setPublished('')
@@ -30,12 +62,14 @@ const NewBook = (props) => {
 
   return (
     <div>
+      <Notify errorMessage={errorMessage} />
       <form onSubmit={submit}>
         <div>
           title
           <input
             value={title}
             onChange={({ target }) => setTitle(target.value)}
+            required
           />
         </div>
         <div>
@@ -43,6 +77,7 @@ const NewBook = (props) => {
           <input
             value={author}
             onChange={({ target }) => setAuhtor(target.value)}
+            required
           />
         </div>
         <div>
@@ -51,6 +86,7 @@ const NewBook = (props) => {
             type='number'
             value={published}
             onChange={({ target }) => setPublished(target.value)}
+            required
           />
         </div>
         <div>
