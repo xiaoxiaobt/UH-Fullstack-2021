@@ -87,6 +87,8 @@ const NewBook = (props) => {
             value={published}
             onChange={({ target }) => setPublished(target.value)}
             required
+            min="0"
+            step="1"
           />
         </div>
         <div>
