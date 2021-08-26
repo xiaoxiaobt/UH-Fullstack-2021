@@ -2,6 +2,7 @@
 **/.git
 **/.eslintcache
 **/.env
+**/.DS_Store
 **/**.log
 **/cypress/videos
 **/cypress/screenshots
