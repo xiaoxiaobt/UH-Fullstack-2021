@@ -26,7 +26,6 @@ const Authors = (props) => {
     return null
   }
 
-
   //const authors = []
 
   return (
