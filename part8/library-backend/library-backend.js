@@ -13,7 +13,7 @@ mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
-  useCreateIndex: true      // No longer needed in new version of mongoose
+  useCreateIndex: true
 })
   .then(() => {
     console.log('connected to MongoDB')
@@ -151,11 +151,13 @@ const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
-    allBooks: (_, args) => {
+    allBooks: async (root, args) => {
       if (args?.author && args?.genre) {
-        return Book.find({ genres: { $in: [args.genre] }, 'author.name': args.author })
+        const author = await Author.findOne({ name: args.author })
+        return Book.find({ genres: { $in: [args.genre] }, author: author }).populate('author')
       } else if (args?.author) {
-        return Book.find({ "author.name": args.author })
+        const author = await Author.findOne({ name: args.author })
+        return Book.find({ author: author }).populate('author')
       } else if (args?.genre) {
         return Book.find({ genres: { $in: [args.genre] } })
       } else {
@@ -166,13 +168,16 @@ const resolvers = {
 
   },
   Author: {
-    bookCount: (root) => Book.find({ "author.name": root.name }).countDocuments()
+    bookCount: async (root) => {
+      const author = await Author.findOne({ name: root.name })
+      return Book.find({ author: author }).countDocuments()
+    }
   },
   Mutation: {
     addBook: async (root, args) => {
       if ((await Author.findOne({ name: args.author })) === null) {
         const author = new Author({ name: args.author, born: null })
-        author.save()
+        await author.save()
       }
       const book = new Book({ ...args, author: await Author.findOne({ name: args.author }) })
       return book.save()
