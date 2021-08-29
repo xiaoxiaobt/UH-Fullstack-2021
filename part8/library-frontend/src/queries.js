@@ -13,6 +13,7 @@ export const ALL_AUTHORS_AND_BOOKS = gql`
         name
       }
       published
+      genres
     }
   }
 `
