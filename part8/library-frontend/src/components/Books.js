@@ -15,12 +15,8 @@ const Books = (props) => {
         <tbody>
           <tr>
             <th></th>
-            <th>
-              author
-            </th>
-            <th>
-              published
-            </th>
+            <th>author</th>
+            <th>published</th>
           </tr>
           {props.books.map(a =>
             <tr key={a.title}>
