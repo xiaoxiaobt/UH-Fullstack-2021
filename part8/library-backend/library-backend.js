@@ -182,9 +182,9 @@ const resolvers = {
         const author = await Author.findOne({ name: args.author })
         return Book.find({ author: author }).populate('author')
       } else if (args?.genre) {
-        return Book.find({ genres: { $in: [args.genre] } })
+        return Book.find({ genres: { $in: [args.genre] } }).populate('author')
       } else {
-        return Book.find({})
+        return Book.find({}).populate('author')
       }
     },
     allAuthors: () => Author.find({}),
