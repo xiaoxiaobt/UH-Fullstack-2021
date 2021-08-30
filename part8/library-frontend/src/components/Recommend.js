@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useQuery } from '@apollo/client'
+import { ME } from '../queries'
 
-const Recommend = ({ show, books }) => {
-  
+const Recommend = ({ show, books, setError, favoriteGenre }) => {
+  //const [favoriteGenre, setFavoriteGenre] = useState(null)
+  // const me = useQuery(ME)
+  // setFavoriteGenre(me.favoriteGenre)
+
   if (!show) {
     return null
   }
-
-  const favoriteGenre = "refactoring"
+  // const favoriteGenre = "refactoring"
 
   return (
     <div>
