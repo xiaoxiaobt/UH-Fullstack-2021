@@ -2,15 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client'
 import { ME } from '../queries'
 
-const Recommend = ({ show, books, setError, favoriteGenre }) => {
-  //const [favoriteGenre, setFavoriteGenre] = useState(null)
-  // const me = useQuery(ME)
-  // setFavoriteGenre(me.favoriteGenre)
+const Recommend = ({ show, books }) => {
+  const [favoriteGenre, setFavoriteGenre] = useState(null)
+  const result = useQuery(ME)
+  useEffect(() => {
+    if (result?.data) {
+      setFavoriteGenre(result.data.me.favoriteGenre)
+    }
+  }, [result])
 
   if (!show) {
     return null
   }
-  // const favoriteGenre = "refactoring"
 
   return (
     <div>

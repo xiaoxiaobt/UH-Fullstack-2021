@@ -71,7 +71,7 @@ const App = () => {
       />
 
       <Recommend
-        show={page === 'recommend'} setError={notify} books={result.data.allBooks} favoriteGenre={result.data.me?.favoriteGenre}
+        show={page === 'recommend'} books={result.data.allBooks}
       />
 
       <LoginForm
