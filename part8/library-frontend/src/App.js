@@ -71,7 +71,7 @@ const App = () => {
       />
 
       <Recommend
-        show={page === 'recommend'} books={result.data.allBooks}
+        show={page === 'recommend'}
       />
 
       <LoginForm
