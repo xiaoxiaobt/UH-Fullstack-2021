@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery } from '@apollo/client'
-import { ME } from '../queries'
+import { useQuery, useLazyQuery } from '@apollo/client'
+import { ME, ALL_BOOKS_WITH_GENRE } from '../queries'
+// import { set } from 'mongoose';
 
-const Recommend = ({ show, books }) => {
+const Recommend = ({ show }) => {
   const [favoriteGenre, setFavoriteGenre] = useState(null)
-  const result = useQuery(ME)
+  const [books, setBooks] = useState([])
+  const result_me = useQuery(ME)
+  const [getBooks, result_books] = useLazyQuery(ALL_BOOKS_WITH_GENRE, { variables: { genre: favoriteGenre } })
   useEffect(() => {
-    if (result?.data) {
-      setFavoriteGenre(result.data.me.favoriteGenre)
+    if (result_me.data) {
+      setFavoriteGenre(result_me.data.me.favoriteGenre)
+      getBooks(favoriteGenre)
     }
-  }, [result])
+  }, [result_me, favoriteGenre, getBooks])
+
+  useEffect(() => {
+    if (result_books.data) {
+      setBooks(result_books.data.allBooks)
+    }
+  }, [result_books])
 
   if (!show) {
     return null
@@ -26,7 +36,7 @@ const Recommend = ({ show, books }) => {
             <th>born</th>
             <th>books</th>
           </tr>
-          {books.filter(b => b.genres.includes(favoriteGenre)).map(a =>
+          {books.map(a =>
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
