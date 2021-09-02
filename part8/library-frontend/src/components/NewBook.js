@@ -11,10 +11,21 @@ const NewBook = ({setErrorMessage, show, setError}) => {
   
 
   const [addBook] = useMutation(ADD_BOOK, {
-    refetchQueries: [{ query: ALL_AUTHORS_AND_BOOKS }],
+    //refetchQueries: [{ query: ALL_AUTHORS_AND_BOOKS }],
     onError: (error) => {
       console.log(error)
       setError(error.graphQLErrors[0].message)
+    },
+    update: (store, response) => {
+      const dataInStore = store.readQuery({ query: ALL_AUTHORS_AND_BOOKS })
+      store.writeQuery({
+        query: ALL_AUTHORS_AND_BOOKS,
+        data: {
+          ...dataInStore,
+          allAuthors: [ ...dataInStore.allAuthors, response.data.addBook.author ],
+          allBooks: [ ...dataInStore.allBooks, response.data.addBook ]
+        }
+      })
     }
   })
 
