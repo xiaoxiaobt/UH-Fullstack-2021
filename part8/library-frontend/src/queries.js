@@ -21,11 +21,18 @@ export const ALL_AUTHORS_AND_BOOKS = gql`
       bookCount
     }
     allBooks {
-      ...BookDetails
+      title
+      author {
+        name
+        born
+        bookCount
+      }
+      published
+      genres
     }
   }
-  ${BOOK_DETAILS}  
 `
+
 export const ADD_BOOK = gql`
   mutation addBook($title: String!, $published: Int!, $author: String!, $genres: [String!]!) {
     addBook(
@@ -34,7 +41,15 @@ export const ADD_BOOK = gql`
       author: $author,
       genres: $genres
     ) {
-      ...BookDetails
+      title
+      published
+      author {
+        name
+        born
+        bookCount
+      }
+      genres
+      id
     }
   }
 `
@@ -73,7 +88,23 @@ export const ME = gql`
 export const ALL_BOOKS_WITH_GENRE = gql`
   query all_books_with_genre($genre: String) {
     allBooks(genre: $genre) {
+      title
+      author {
+        name
+        born
+        bookCount
+      }
+      published
+      genres
+    }
+  }
+`
+
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
       ...BookDetails
     }
   }
+  ${BOOK_DETAILS}
 `
