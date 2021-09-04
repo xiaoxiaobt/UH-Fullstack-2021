@@ -6,6 +6,8 @@ name: Part 4 CI
 on:
   push:
     branches: [master]
+    paths:
+      - 'part4/**'
   pull_request:
     branches: [master]
 
