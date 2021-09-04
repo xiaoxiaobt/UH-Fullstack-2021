@@ -221,9 +221,7 @@ const resolvers = {
       try {
         await book.save()
       } catch (error) {
-        throw new UserInputError(error.message, {
-          invalidArgs: args,
-        })
+        throw new UserInputError(error.message, { invalidArgs: args })
       }
 
       pubsub.publish('BOOK_ADDED', { bookAdded: book })
