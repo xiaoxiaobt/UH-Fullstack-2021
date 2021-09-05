@@ -18,11 +18,11 @@ const calculateBmi = (args: Array<String>): String => {
   else if (bmi < 30)
     return "Overweight (Pre-obese)"
   else if (bmi < 35)
-    "Obese (Class I)"
+    return "Obese (Class I)"
   else if (bmi < 40)
-    "Obese (Class II)"
+    return "Obese (Class II)"
   else
-    "Obese (Class III)"
+    return "Obese (Class III)"
 }
 
 console.log(calculateBmi(process.argv))
