@@ -11,7 +11,7 @@ app.get('/bmi', (req, res) => {
   const height = String(req.query.height);
   const weight = String(req.query.weight);
   try {
-    const bmi = calculateBmi([height, weight])
+    const bmi = calculateBmi([height, weight]);
     res.send({
       weight: Number(weight),
       height: Number(height),
