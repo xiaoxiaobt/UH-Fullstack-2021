@@ -1,7 +1,7 @@
 const calculateBmi = (args: Array<String>): String => {
-  if (args.length < 4) throw new Error('Not enough arguments')
-  if (args.length > 4) throw new Error('Too many arguments')
-  const [height, weight] = args.slice(2).map(Number);
+  if (args.length < 2) throw new Error('Not enough arguments')
+  if (args.length > 2) throw new Error('Too many arguments')
+  const [height, weight] = args.map(Number);
 
   if (isNaN(height) || isNaN(weight)) throw new Error('Provided values were not numbers!');
   else if (height <= 0 || weight <= 0) throw new Error("Non-positive values are not allowed")
@@ -25,4 +25,6 @@ const calculateBmi = (args: Array<String>): String => {
     return "Obese (Class III)"
 }
 
-console.log(calculateBmi(process.argv))
+// console.log(calculateBmi(process.argv))
+
+export default calculateBmi
