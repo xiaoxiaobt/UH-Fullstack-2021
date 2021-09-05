@@ -1,5 +1,11 @@
-const calculateBmi = (height: number, weight: number): String => {
-  if (height < 0 || weight < 0) return "Negative values are not allowed"
+const calculateBmi = (args: Array<String>): String => {
+  if (args.length < 4) throw new Error('Not enough arguments')
+  if (args.length > 4) throw new Error('Too many arguments')
+  const [height, weight] = args.slice(2).map(Number);
+
+  if (isNaN(height) || isNaN(weight)) throw new Error('Provided values were not numbers!');
+  else if (height <= 0 || weight <= 0) throw new Error("Non-positive values are not allowed")
+
   const bmi: number = 10000 * weight / (height * height)
   if (bmi < 16)
     return "Underweight (Severe thinness)"
@@ -19,4 +25,4 @@ const calculateBmi = (height: number, weight: number): String => {
     "Obese (Class III)"
 }
 
-console.log(calculateBmi(180, 74))
+console.log(calculateBmi(process.argv))
