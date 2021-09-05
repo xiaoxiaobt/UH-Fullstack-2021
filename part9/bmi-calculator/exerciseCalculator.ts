@@ -13,17 +13,17 @@ interface Result {
 }
 
 const calculateExercises = (args: Array<string>): Result => {
-  const arguments = args.map(Number).slice(2)
-  if (arguments.length <= 1) {
+  const argumentList: Array<number> = args.map(Number).slice(2)
+  if (argumentList.length <= 1) {
     throw new Error('Not enough arguments')
-  } else if (arguments.some(n => isNaN(n))) {
+  } else if (argumentList.some(n => isNaN(n))) {
     throw new Error('All values should be numbers')
-  } else if (arguments.some(n => n < 0)) {
+  } else if (argumentList.some(n => n < 0)) {
     throw new Error('Negative numbers are not allowed')
   }
 
-  const record = arguments.slice(1)
-  const target = arguments[0]
+  const record = argumentList.slice(1)
+  const target = argumentList[0]
   const periodLength: number = record.length
   const trainingDays: number = record.filter(x => x > 0).length
   const average: number = record.reduce((a, b) => a + b) / periodLength
