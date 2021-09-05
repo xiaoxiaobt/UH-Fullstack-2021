@@ -13,7 +13,7 @@ interface Result {
 }
 
 const calculateExercises = (args: Array<string>): Result => {
-  const argumentList: Array<number> = args.map(Number).slice(2);
+  const argumentList: Array<number> = args.map(Number);
   if (argumentList.length <= 1) {
     throw new Error('Not enough arguments');
   } else if (argumentList.some(n => isNaN(n))) {
@@ -35,4 +35,4 @@ const calculateExercises = (args: Array<string>): Result => {
   };
 };
 
-console.log(calculateExercises(process.argv));
+export default calculateExercises;
