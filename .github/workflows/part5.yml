@@ -10,6 +10,7 @@ on:
       - "part5/**"
   pull_request:
     branches: [master]
+  workflow_dispatch:
 
 env:
   TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
