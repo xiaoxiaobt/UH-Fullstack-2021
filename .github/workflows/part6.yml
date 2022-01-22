@@ -7,15 +7,10 @@ on:
   push:
     branches: [master]
     paths:
-      - 'part6/**'
+      - "part6/**"
   pull_request:
     branches: [master]
-
-env:
-  TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
-  MONGODB_URI: ${{ secrets.MONGODB_URI }}
-  PORT: ${{ secrets.PORT }}
-  SECRET: ${{ secrets.SECRET }}
+  workflow_dispatch:
 
 defaults:
   run:
@@ -24,9 +19,16 @@ defaults:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        node-version: ['14']
+        node-version: ["14"]
+
+    env:
+      TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      PORT: ${{ secrets.PORT }}
+      SECRET: ${{ secrets.SECRET }}
 
     steps:
       - uses: actions/checkout@v2

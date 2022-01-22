@@ -7,9 +7,10 @@ on:
   push:
     branches: [master]
     paths:
-      - 'part5/**'
+      - "part5/**"
   pull_request:
     branches: [master]
+  workflow_dispatch:
 
 env:
   TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
@@ -27,7 +28,13 @@ jobs:
 
     strategy:
       matrix:
-        node-version: ['14']
+        node-version: ["14"]
+
+    env:
+      TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      PORT: ${{ secrets.PORT }}
+      SECRET: ${{ secrets.SECRET }}
 
     steps:
       - uses: actions/checkout@v2
@@ -35,6 +42,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: part5/package-lock.json
 
       - run: npm config set fund false
       - run: npm ci
