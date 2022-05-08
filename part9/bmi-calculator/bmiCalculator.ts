@@ -1,6 +1,6 @@
 const calculateBmi = (args: Array<string>): string => {
   if (args.length < 2) throw new Error('Not enough arguments');
-  if (args.length > 2) throw new Error('Too many arguments');
+  else if (args.length > 2) throw new Error('Too many arguments');
   const [height, weight] = args.map(Number);
 
   if (isNaN(height) || isNaN(weight)) throw new Error('Provided values were not numbers!');
