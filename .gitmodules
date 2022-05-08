@@ -2,3 +2,6 @@
 	path = part3
 	url = git@github.com:xiaoxiaobt/Fullstack-UH-2021-Part3.git
 	branch = master
+[submodule "part9/patientor-frontend"]
+	path = part9/patientor-frontend
+	url = https://github.com/fullstack-hy2020/patientor
