@@ -4,4 +4,4 @@
 	branch = master
 [submodule "part9/patientor-frontend"]
 	path = part9/patientor-frontend
-	url = https://github.com/fullstack-hy2020/patientor
+	url = git@github.com:fullstack-hy2020/patientor.git
