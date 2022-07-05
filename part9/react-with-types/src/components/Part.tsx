@@ -42,7 +42,7 @@ const Part = ({ coursePart }: { coursePart: CoursePart }) => {
         <>
           <p><b>{coursePart.name} {coursePart.exerciseCount}</b></p>
           <p><i>{coursePart.description}</i></p>
-          <p>required skills: {coursePart.requirements.join(",")}</p>
+          <p>required skills: {coursePart.requirements.join(", ")}</p>
           <br/>
         </>
       )
