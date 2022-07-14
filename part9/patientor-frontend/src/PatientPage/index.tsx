@@ -3,6 +3,7 @@ import axios from "axios";
 import { apiBaseUrl } from "../constants";
 import { useParams } from "react-router-dom";
 import { Diagnose, Patient } from '../types';
+import PatientListRow from "../PatientListRow";
 
 const PatientPage = () => {
 
@@ -42,16 +43,7 @@ const PatientPage = () => {
       <p>ssn: {currentPatient?.ssn}</p>
       <p>occupation: {currentPatient?.occupation}</p>
       <h3>entries</h3>
-      {currentPatient?.entries.map((e, index) => {
-        return (
-          <div key={index}>
-            <p>{e.description}</p>
-            <ul>
-              {e.diagnosisCodes?.map(c => <li key={c}>{c} {diagnoseList?.find(x => x.code === c)?.name}</li>)}
-            </ul>
-          </div>
-        );
-      })}
+      {currentPatient?.entries.map((e, index) => <PatientListRow entry={e} key={index} diagnoseList={diagnoseList} />)}
     </div>
   );
 };
