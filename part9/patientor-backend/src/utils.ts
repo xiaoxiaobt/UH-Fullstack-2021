@@ -49,6 +49,88 @@ const parseDate = (date: unknown): string => {
   return date;
 };
 
+const parseDescription = (description: unknown): string => {
+  if (!description || !isString(description)) {
+    throw new Error('Incorrect or missing description: ' + description);
+  }
+  return description;
+};
+
+const parseSpecialist = (specialist: unknown): string => {
+  if (!specialist || !isString(specialist)) {
+    throw new Error('Incorrect or missing specialist: ' + specialist);
+  }
+  return specialist;
+};
+
+const parseEmployerName = (employerName: unknown): string => {
+  if (!employerName || !isString(employerName)) {
+    throw new Error('Incorrect or missing employer name: ' + employerName);
+  }
+  return employerName;
+};
+
+const parseHealthCheckRating = (healthCheckRating: unknown): number => {
+  if (!healthCheckRating || (typeof healthCheckRating !== 'number') || !Number.isInteger(healthCheckRating) || healthCheckRating < 0) {
+    throw new Error('Incorrect or missing health check rating: ' + healthCheckRating);
+  }
+  return healthCheckRating;
+};
+
+const parseSickLeave = (sickLeave: unknown): undefined | { startDate: string, endDate: string } => {
+  if (sickLeave === undefined) {
+    return sickLeave;
+  } else {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const k: any = sickLeave;
+    if (typeof k === 'object' && k !== null &&
+      'startDate' in k && 'endDate' in k &&
+      isString(k.startDate) &&
+      isString(k.endDate) &&
+      isDate(k.startDate as string) &&
+      isDate(k.endDate as string)) {
+      return {
+        startDate: k.startDate as string,
+        endDate: k.endDate as string
+      };
+    } else {
+      throw new Error('Incorrect sick leave.');
+    }
+  }
+};
+
+const parseDiagnosisCodes = (diagnosisCodes: unknown): undefined | Array<Diagnose['code']> => {
+  if (diagnosisCodes === undefined) {
+    return diagnosisCodes;
+  } else {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const k: any = diagnosisCodes;
+    if (Array.isArray(k) && k.every(item => item instanceof String || typeof item === 'string')) {
+      return k as Array<string>;
+    } else {
+      throw new Error('Incorrect diagnosis codes.');
+    }
+  }
+};
+
+const parseDischarge = (discharge: unknown): { date: string, criteria: string } => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const k: any = discharge;
+  if (typeof k === 'object' && k !== null &&
+    'date' in k && 'criteria' in k &&
+    isString(k.date) &&
+    isString(k.criteria) &&
+    isDate(k.date as string)) {
+    return {
+      date: k.date as string,
+      criteria: k.criteria as string
+    };
+  } else {
+    throw new Error('Incorrect discharge.');
+  }
+};
+
+
 type PatientFields = {
   name: string,
   dateOfBirth: string,
@@ -94,11 +176,11 @@ const toNewHealthCheckEntry = ({
 }: HealthCheckEntryFields): NewHealthCheckEntry => {
 
   const newEntry: NewHealthCheckEntry = {
-    description,
-    date,
-    specialist,
-    diagnosisCodes,
-    healthCheckRating,
+    description: parseDescription(description),
+    date: parseDate(date),
+    specialist: parseSpecialist(specialist),
+    diagnosisCodes: parseDiagnosisCodes(diagnosisCodes),
+    healthCheckRating: parseHealthCheckRating(healthCheckRating),
     type: "HealthCheck"
   };
 
@@ -127,12 +209,12 @@ const toNewOccupationalHealthcareEntry = ({
 }: OccupationalHealthcareEntryFields): NewOccupationalHealthcareEntry => {
 
   const newEntry: NewOccupationalHealthcareEntry = {
-    description,
-    date,
-    specialist,
-    diagnosisCodes,
-    employerName,
-    sickLeave,
+    description: parseDescription(description),
+    date: parseDate(date),
+    specialist: parseSpecialist(specialist),
+    diagnosisCodes: parseDiagnosisCodes(diagnosisCodes),
+    employerName: parseEmployerName(employerName),
+    sickLeave: parseSickLeave(sickLeave),
     type: "OccupationalHealthcare"
   };
 
@@ -159,18 +241,16 @@ const toNewHospitalEntry = ({
 }: HospitalEntryFields): NewHospitalEntry => {
 
   const newEntry: NewHospitalEntry = {
-    description,
-    date,
-    specialist,
-    diagnosisCodes,
-    discharge,
+    description: parseDescription(description),
+    date: parseDate(date),
+    specialist: parseSpecialist(specialist),
+    diagnosisCodes: parseDiagnosisCodes(diagnosisCodes),
+    discharge: parseDischarge(discharge),
     type: "Hospital"
   };
 
   return newEntry;
 };
-
-
 
 
 export { toNewPatient, toNewHealthCheckEntry, toNewOccupationalHealthcareEntry, toNewHospitalEntry };
