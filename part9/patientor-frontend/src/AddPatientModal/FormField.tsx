@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { ErrorMessage, Field, FieldProps, FormikProps } from "formik";
+import { ErrorMessage, Field, FieldProps } from "formik";
 import {
   Select,
-  FormControl,
   MenuItem,
   TextField as TextFieldMUI,
   Typography,
 } from "@material-ui/core";
-import { Diagnose, Gender } from "../types";
+import { Gender } from "../types";
 import { InputLabel } from "@material-ui/core";
-import Input from '@material-ui/core/Input';
 
 // structure of a single option
 export type GenderOption = {
