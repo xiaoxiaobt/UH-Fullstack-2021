@@ -1,6 +1,6 @@
 import express from 'express';
 import patientService from '../services/patientService';
-import { NewHealthCheckEntry, NewHospitalEntry, NewOccupationalHealthcareEntry, NewPatient } from '../types';
+import { Entry, NewHealthCheckEntry, NewHospitalEntry, NewOccupationalHealthcareEntry, NewPatient } from '../types';
 import { toNewPatient, toNewHealthCheckEntry, toNewOccupationalHealthcareEntry, toNewHospitalEntry } from '../utils';
 
 const router = express.Router();
@@ -32,19 +32,19 @@ router.post('/:id/entries', (req, res) => {
   try {
     switch (body?.type) {
       case 'HealthCheck':
-        const newEntry: NewHealthCheckEntry = toNewHealthCheckEntry(req.body);
-        const addedEntry: Entry = patientService.addEntry(patientId, newEntry);
-        res.json(addedEntry);
+        const newHealthEntry: NewHealthCheckEntry = toNewHealthCheckEntry(req.body);
+        const addedHealthEntry: Entry = patientService.addEntry(patientId, newHealthEntry);
+        res.json(addedHealthEntry);
         break;
       case 'OccupationalHealthcare':
-        const newEntry: NewOccupationalHealthcareEntry = toNewOccupationalHealthcareEntry(req.body);
-        const addedEntry: Entry = patientService.addEntry(patientId, newEntry);
-        res.json(addedEntry);
+        const newOccupationalEntry: NewOccupationalHealthcareEntry = toNewOccupationalHealthcareEntry(req.body);
+        const addedOccupationalEntry: Entry = patientService.addEntry(patientId, newOccupationalEntry);
+        res.json(addedOccupationalEntry);
         break;
       case 'Hospital':
-        const newEntry: NewHospitalEntry = toNewHospitalEntry(req.body);
-        const addedEntry: Entry = patientService.addEntry(patientId, newEntry);
-        res.json(addedEntry);
+        const newHospitalEntry: NewHospitalEntry = toNewHospitalEntry(req.body);
+        const addedHospitalEntry: Entry = patientService.addEntry(patientId, newHospitalEntry);
+        res.json(addedHospitalEntry);
         break;
       default:
         throw Error;
