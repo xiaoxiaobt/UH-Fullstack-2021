@@ -16,6 +16,7 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const newPatient: NewPatient = toNewPatient(req.body);
 
     const addedEntry = patientService.addPatient(newPatient);
@@ -28,20 +29,22 @@ router.post('/', (req, res) => {
 
 router.post('/:id/entries', (req, res) => {
   const patientId = req.params.id;
-  const body = req.body;
   try {
-    switch (body?.type) {
+    switch (req?.body?.type) {
       case 'HealthCheck':
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const newHealthEntry: NewHealthCheckEntry = toNewHealthCheckEntry(req.body);
         const addedHealthEntry: Entry = patientService.addEntry(patientId, newHealthEntry);
         res.json(addedHealthEntry);
         break;
       case 'OccupationalHealthcare':
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const newOccupationalEntry: NewOccupationalHealthcareEntry = toNewOccupationalHealthcareEntry(req.body);
         const addedOccupationalEntry: Entry = patientService.addEntry(patientId, newOccupationalEntry);
         res.json(addedOccupationalEntry);
         break;
       case 'Hospital':
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const newHospitalEntry: NewHospitalEntry = toNewHospitalEntry(req.body);
         const addedHospitalEntry: Entry = patientService.addEntry(patientId, newHospitalEntry);
         res.json(addedHospitalEntry);
