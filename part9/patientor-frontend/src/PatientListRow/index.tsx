@@ -9,9 +9,9 @@ const PatientListRow = ({ entry, key, diagnoseList }: { entry: Entry, key: numbe
     case "Hospital":
       return <HospitalRow entry={entry} key={key} diagnoseList={diagnoseList} />;
     case "HealthCheck":
-      return <HealthCheckRow entry={entry} key={key} />;
+      return <HealthCheckRow entry={entry} key={key} diagnoseList={diagnoseList} />;
     case "OccupationalHealthcare":
-      return <OccupationalRow entry={entry} key={key} />;
+      return <OccupationalRow entry={entry} key={key} diagnoseList={diagnoseList} />;
   }
 };
 

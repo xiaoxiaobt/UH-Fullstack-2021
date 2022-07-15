@@ -1,4 +1,4 @@
-import { Gender, NewPatient } from "./types";
+import { Diagnose, Gender, NewPatient, NewHealthCheckEntry, HealthCheckRating, NewOccupationalHealthcareEntry, NewHospitalEntry } from "./types";
 
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
@@ -38,7 +38,6 @@ const parseOccupation = (occupation: unknown): string => {
   return occupation;
 };
 
-
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
 };
@@ -49,7 +48,6 @@ const parseDate = (date: unknown): string => {
   }
   return date;
 };
-
 
 type PatientFields = {
   name: string,
@@ -79,4 +77,100 @@ const toNewPatient = ({
   return newEntry;
 };
 
-export default toNewPatient;
+type HealthCheckEntryFields = {
+  description: string;
+  date: string;
+  specialist: string;
+  diagnosisCodes?: Array<Diagnose['code']>;
+  healthCheckRating: HealthCheckRating;
+};
+
+const toNewHealthCheckEntry = ({
+  description,
+  date,
+  specialist,
+  diagnosisCodes,
+  healthCheckRating
+}: HealthCheckEntryFields): NewHealthCheckEntry => {
+
+  const newEntry: NewHealthCheckEntry = {
+    description,
+    date,
+    specialist,
+    diagnosisCodes,
+    healthCheckRating,
+    type: "HealthCheck"
+  };
+
+  return newEntry;
+};
+
+type OccupationalHealthcareEntryFields = {
+  description: string;
+  date: string;
+  specialist: string;
+  diagnosisCodes?: Array<Diagnose['code']>;
+  employerName: string,
+  sickLeave?: {
+    startDate: string,
+    endDate: string
+  }
+};
+
+const toNewOccupationalHealthcareEntry = ({
+  description,
+  date,
+  specialist,
+  diagnosisCodes,
+  employerName,
+  sickLeave
+}: OccupationalHealthcareEntryFields): NewOccupationalHealthcareEntry => {
+
+  const newEntry: NewOccupationalHealthcareEntry = {
+    description,
+    date,
+    specialist,
+    diagnosisCodes,
+    employerName,
+    sickLeave,
+    type: "OccupationalHealthcare"
+  };
+
+  return newEntry;
+};
+
+type HospitalEntryFields = {
+  description: string;
+  date: string;
+  specialist: string;
+  diagnosisCodes?: Array<Diagnose['code']>;
+  discharge: {
+    date: string;
+    criteria: string;
+  }
+};
+
+const toNewHospitalEntry = ({
+  description,
+  date,
+  specialist,
+  diagnosisCodes,
+  discharge
+}: HospitalEntryFields): NewHospitalEntry => {
+
+  const newEntry: NewHospitalEntry = {
+    description,
+    date,
+    specialist,
+    diagnosisCodes,
+    discharge,
+    type: "Hospital"
+  };
+
+  return newEntry;
+};
+
+
+
+
+export { toNewPatient, toNewHealthCheckEntry, toNewOccupationalHealthcareEntry, toNewHospitalEntry };
