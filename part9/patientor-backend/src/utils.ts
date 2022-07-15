@@ -71,7 +71,7 @@ const parseEmployerName = (employerName: unknown): string => {
 };
 
 const parseHealthCheckRating = (healthCheckRating: unknown): number => {
-  if (healthCheckRating === undefined || healthCheckRating === null || (typeof healthCheckRating !== 'number') || !Number.isInteger(healthCheckRating) || healthCheckRating < 0) {
+  if (healthCheckRating === undefined || healthCheckRating === null || (typeof healthCheckRating !== 'number') || !Number.isInteger(healthCheckRating) || healthCheckRating < 0 || healthCheckRating > 3) {
     throw new Error('Incorrect or missing health check rating: ' + healthCheckRating);
   }
   return healthCheckRating;
