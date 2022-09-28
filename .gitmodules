@@ -2,3 +2,6 @@
 	path = part3
 	url = git@github.com:xiaoxiaobt/Fullstack-UH-2021-Part3.git
 	branch = master
+[submodule "part11"]
+	path = part11
+	url = git@github.com:xiaoxiaobt/full-stack-open-pokedex.git
